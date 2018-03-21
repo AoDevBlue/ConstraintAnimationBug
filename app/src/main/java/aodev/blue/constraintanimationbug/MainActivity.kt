@@ -2,9 +2,11 @@ package aodev.blue.constraintanimationbug
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.transition.TransitionManager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,12 +18,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        val helloButtonContainer: ViewGroup = findViewById(R.id.hello_button_container)
+        val rootContainer: ViewGroup = findViewById(R.id.root_view)
         val toggleButton: Button = findViewById(R.id.toggle_button)
+        val infoTextView: TextView = findViewById(R.id.info_text)
 
         toggleButton.setOnClickListener {
-            val isVisible = helloButtonContainer.visibility == View.VISIBLE
-            helloButtonContainer.visibility = if (isVisible) View.GONE else View.VISIBLE
+            TransitionManager.beginDelayedTransition(rootContainer)
+            infoTextView.toggleVisibility()
         }
+    }
+
+    private fun View.toggleVisibility() {
+        val isVisible = visibility == View.VISIBLE
+        visibility = if (isVisible) View.GONE else View.VISIBLE
     }
 }
